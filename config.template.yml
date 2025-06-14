@@ -1,0 +1,16 @@
+db:
+  host: your-database-host
+  port: 5432
+  user: localcrag
+  password: your-db-password
+  name: localcrag
+
+minio:
+  host: your-minio-host
+  access_key: localcrag
+  secret_key: your-minio-secret
+  bucket: localcrag
+
+backup:
+  dir: ./backups
+  keep: 5  # Number of backups to keep (-1 to keep all)
