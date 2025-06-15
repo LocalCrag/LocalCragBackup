@@ -11,6 +11,8 @@ RUN apt-get update && apt-get install -y wget gnupg \
         zip \
         curl \
         jq \
+        python3 \
+        python3-pip \
     && curl -sL https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o /usr/bin/yq \
     && chmod +x /usr/bin/yq \
     && curl -sL https://dl.min.io/client/mc/release/linux-amd64/mc -o /usr/bin/mc \
@@ -21,7 +23,11 @@ RUN apt-get update && apt-get install -y wget gnupg \
 WORKDIR /app
 
 # Copy the backup script and configuration files
-COPY backup.sh config.yml /app/
+COPY backup.sh config.yml send_email.py /app/
+
+# Install Pipenv and dependencies
+RUN pip3 install --no-cache-dir pipenv
+RUN pipenv install --deploy --ignore-pipfile
 
 # Make the script executable
 RUN chmod +x /app/backup.sh

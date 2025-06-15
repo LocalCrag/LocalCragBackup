@@ -1,6 +1,19 @@
 #!/bin/bash
 set -e
 
+# Function to send error notification
+send_error_notification() {
+  ERROR_MESSAGE=$(<"$ERROR_LOG_FILE")
+  pipenv run python3 send_error_email.py "$ERROR_MESSAGE"
+}
+
+# Trap errors and call the notification function
+ERROR_LOG_FILE=$(mktemp)
+trap 'echo "An error occurred. Check the log for details."; send_error_notification' ERR
+
+# Redirect all output to the error log file
+exec 2>"$ERROR_LOG_FILE"
+
 # Load configuration from YAML file
 CONFIG_FILE="config.yml"
 DB_HOST=$(yq '.db.host' "$CONFIG_FILE")

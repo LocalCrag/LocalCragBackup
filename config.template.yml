@@ -1,3 +1,7 @@
+# Name of the instance for failure messages
+instance_name: LocalCrag
+
+# Database configuration
 db:
   host: your-database-host
   port: 5432
@@ -5,12 +9,23 @@ db:
   password: backup-user-password
   name: localcrag
 
+# MinIO configuration
 minio:
   host: https://your-minio-host
   access_key: localcrag
   secret_key: your-minio-secret
   bucket: localcrag
 
+# Number and location of backups
 backup:
   dir: ./backups
   keep: 5  # Number of backups to keep (-1 to keep all)
+
+# SMTP config for failure emails
+smtp:
+  host: ''
+  port: ''
+  user: ''
+  password: ''
+  sender: ''
+  receiver: ''
