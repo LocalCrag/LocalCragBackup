@@ -30,7 +30,7 @@ pg_dump -h $DB_HOST -p $DB_PORT -U $DB_USER $DB_NAME > "$DB_BACKUP_FILE"
 
 # Backup MinIO files
 mkdir -p "$MINIO_BACKUP_DIR"
-mc alias set minio http://$MINIO_HOST $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
+mc alias set minio $MINIO_HOST $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
 mc cp --recursive minio/$MINIO_BUCKET "$MINIO_BACKUP_DIR"
 
 # Create zip archive
