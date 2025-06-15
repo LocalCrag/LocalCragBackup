@@ -1,8 +1,8 @@
 db:
   host: your-database-host
   port: 5432
-  user: localcrag
-  password: your-db-password
+  user: backup
+  password: backup-user-password
   name: localcrag
 
 minio:

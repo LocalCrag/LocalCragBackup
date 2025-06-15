@@ -4,6 +4,8 @@ A lightweight Docker-based tool for creating and managing backups of your databa
 
 ## Setup
 
+### Prepare backup tool
+
 1. Copy the `config.template.yml` file to `config.yml`:
    ```bash
    cp config.template.yml config.yml
@@ -13,6 +15,46 @@ A lightweight Docker-based tool for creating and managing backups of your databa
 3. Build the Docker image:
    ```bash
    docker build -t localcrag-backup-tool .
+   ```
+
+### Prepare LocalCrag deployment
+
+For the backup tool to be able to access your deployments database and MinIO storage, 
+you need to ensure that the database is accessible from the server where the backup tool is running. The MinIO storage 
+should already be accessible via the endpoint that the LocalCrag deployment is using (normally smth like https://s3.your-domain.com).
+
+#### Database Access
+
+To make the database accessible, follow these steps:
+
+1. Create a `pg_hba.conf` file in the root directory of your LocalCrag deployment with the following content:
+   ```conf
+   # Allow access from the backup tool's IP address
+   host    all             backup             <BACKUP_TOOL_IP>/32            md5
+   ```
+   Replace `<BACKUP_TOOL_IP>` with the actual IP address of the server where the backup tool will run.
+2. Open up the database port in the `docker-compose.override.yml` file of your LocalCrag deployment and override the `pg_hba.conf` file to allow access from the backup tool's IP address. Also add the `POSTGRES_BACKUP_PASSWORD` environment variable to the server service. On startup, the backup postgres user will be created using this password.
+   ```yaml
+   services:
+     database:
+       ports:
+         - 5432:5432
+       volumes:
+         - database:/var/lib/postgresql/data # Needed in the override file as well as lists get replaced, not merged
+         - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+     [...]
+     server:
+       environment:
+         POSTGRES_BACKUP_PASSWORD: secure-password-for-backup-user
+   ```
+3. Restart your LocalCrag deployment to apply the changes:
+   ```bash
+   docker-compose down
+   docker-compose up -d
+   ```
+4. Open the port in your firewall to allow access to the database from the backup tool's IP address. For example, if you are using `ufw`, you can run:
+   ```bash
+   sudo ufw allow from <BACKUP_TOOL_IP> to any port 5432
    ```
 
 ## Usage
