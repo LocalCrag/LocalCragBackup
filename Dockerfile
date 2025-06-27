@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y wget gnupg \
 WORKDIR /app
 
 # Copy the backup script and configuration files
-COPY backup.sh config.yml send_error_email.py /app/
+COPY backup.sh config.yml send_error_email.py Pipfile.lock /app/
 
 # Install Pipenv and dependencies
 RUN pip3 install --no-cache-dir pipenv
