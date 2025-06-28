@@ -65,7 +65,7 @@ zip -r "$ZIP_FILE" "$DB_BACKUP_FILE" "$MINIO_BACKUP_DIR"
 rm -rf "$DB_BACKUP_FILE" "$MINIO_BACKUP_DIR"
 
 # Handle storage type
-if [[ "$STORAGE_TYPE" == "ftp" ]]; then
+if [[ "$STORAGE_TYPE" == "sftp" ]]; then
   # Upload backup to SFTP server
   echo "Uploading backup to SFTP server..."
   sshpass -p "$FTP_PASSWORD" sftp -oBatchMode=no -b - "$FTP_USER@$FTP_HOST" <<EOF

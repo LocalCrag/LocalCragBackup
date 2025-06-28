@@ -37,4 +37,4 @@ ftp:
   dir: /localcrag-backups
 
 storage:
-  type: local  # Options: local, ftp
+  type: local  # Options: local, sftp
