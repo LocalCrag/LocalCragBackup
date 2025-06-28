@@ -8,7 +8,7 @@ WORKDIR /app
 
 # Install required dependencies, Python 3.13, and PostgreSQL 17
 RUN apt-get update && apt-get install -y \
-    software-properties-common wget gnupg curl \
+    software-properties-common wget gnupg curl zip \
     && add-apt-repository ppa:deadsnakes/ppa \
     && apt-get update && apt-get install -y \
     python3.13 \
