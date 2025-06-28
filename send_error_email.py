@@ -14,8 +14,7 @@ def send_failure_message(error_logs):
     Mails the captured logs to the configured email receiver.
     """
 
-    message = f"<p>Backup of LocalCrag instance <strong>\"{config["instance_name"]}\"</strong> failed:</p>\n\n"
-    message = message + error_logs
+    message = f"<p>Backup of LocalCrag instance <strong>{config["instance_name"]}</strong> failed:</p><code>{error_logs}</code>"
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = "LocalCrag backup failed"
