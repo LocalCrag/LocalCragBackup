@@ -80,6 +80,10 @@ EOF
 ls -1 $SFTP_DIR/
 EOF
 )
+
+    # Skip the first line of the output (repeats the command in the sftp session)
+    FILES=$(echo "$FILES" | tail -n +2)
+
     FILE_COUNT=$(echo "$FILES" | wc -l)
     if [[ $FILE_COUNT -gt $BACKUP_KEEP ]]; then
       DELETE_COUNT=$((FILE_COUNT - BACKUP_KEEP))
