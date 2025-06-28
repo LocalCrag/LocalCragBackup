@@ -35,10 +35,10 @@ MINIO_BUCKET=$(yq '.minio.bucket' "$CONFIG_FILE")
 BACKUP_DIR=$(yq '.backup.dir' "$CONFIG_FILE")
 BACKUP_KEEP=$(yq '.backup.keep' "$CONFIG_FILE")
 STORAGE_TYPE=$(yq '.storage.type' "$CONFIG_FILE")
-FTP_HOST=$(yq '.ftp.host' "$CONFIG_FILE")
-FTP_USER=$(yq '.ftp.user' "$CONFIG_FILE")
-FTP_PASSWORD=$(yq '.ftp.password' "$CONFIG_FILE")
-FTP_DIR=$(yq '.ftp.dir' "$CONFIG_FILE")
+SFTP_HOST=$(yq '.sftp.host' "$CONFIG_FILE")
+SFTP_USER=$(yq '.sftp.user' "$CONFIG_FILE")
+SFTP_PASSWORD=$(yq '.sftp.password' "$CONFIG_FILE")
+SFTP_DIR=$(yq '.sftp.dir' "$CONFIG_FILE")
 
 # Timestamp and file paths
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
@@ -68,16 +68,16 @@ rm -rf "$DB_BACKUP_FILE" "$MINIO_BACKUP_DIR"
 if [[ "$STORAGE_TYPE" == "sftp" ]]; then
   # Upload backup to SFTP server
   echo "Uploading backup to SFTP server..."
-  sshpass -p "$FTP_PASSWORD" sftp -oBatchMode=no -b - "$FTP_USER@$FTP_HOST" <<EOF
-mkdir $FTP_DIR
-put $ZIP_FILE $FTP_DIR/
+  sshpass -p "$SFTP_PASSWORD" sftp -oBatchMode=no -b - "$SFTP_USER@$SFTP_HOST" <<EOF
+mkdir $SFTP_DIR
+put $ZIP_FILE $SFTP_DIR/
 EOF
 
   # Retain only the specified number of backups on the SFTP server
   if [[ $BACKUP_KEEP -ne -1 ]]; then
     echo "Managing backups on SFTP server..."
-    FILES=$(sshpass -p "$FTP_PASSWORD" sftp -oBatchMode=no -b - "$FTP_USER@$FTP_HOST" <<EOF
-ls -1 $FTP_DIR/
+    FILES=$(sshpass -p "$SFTP_PASSWORD" sftp -oBatchMode=no -b - "$SFTP_USER@$SFTP_HOST" <<EOF
+ls -1 $SFTP_DIR/
 EOF
 )
     FILE_COUNT=$(echo "$FILES" | wc -l)
@@ -85,8 +85,8 @@ EOF
       DELETE_COUNT=$((FILE_COUNT - BACKUP_KEEP))
       DELETE_FILES=$(echo "$FILES" | head -n "$DELETE_COUNT")
       for FILE in $DELETE_FILES; do
-        sshpass -p "$FTP_PASSWORD" sftp -oBatchMode=no -b - "$FTP_USER@$FTP_HOST" <<EOF
-rm $FTP_DIR/$FILE
+        sshpass -p "$SFTP_PASSWORD" sftp -oBatchMode=no -b - "$SFTP_USER@$SFTP_HOST" <<EOF
+rm $SFTP_DIR/$FILE
 EOF
       done
     fi
