@@ -4,7 +4,15 @@ set -e
 # Function to send error notification
 send_error_notification() {
   ERROR_MESSAGE=$(<"$ERROR_LOG_FILE")
-  pipenv run python3 send_error_email.py "$ERROR_MESSAGE"
+  echo "Sending error notification with the following message:"
+  echo "$ERROR_MESSAGE"
+
+  # Capture pipenv output and errors
+  PIPENV_OUTPUT=$(pipenv run python3 send_error_email.py "$ERROR_MESSAGE" 2>&1)
+  if [ $? -ne 0 ]; then
+    echo "Failed to send error notification using send_error_email.py. Error details:"
+    echo "$PIPENV_OUTPUT"
+  fi
 }
 
 # Trap errors and call the notification function
