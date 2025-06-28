@@ -90,7 +90,7 @@ EOF
       DELETE_FILES=$(echo "$FILES" | head -n "$DELETE_COUNT")
       for FILE in $DELETE_FILES; do
         sshpass -p "$SFTP_PASSWORD" sftp -oStrictHostKeyChecking=no -oBatchMode=no -b - "$SFTP_USER@$SFTP_HOST" <<EOF
-rm $SFTP_DIR/$FILE
+rm $FILE
 EOF
       done
     fi
