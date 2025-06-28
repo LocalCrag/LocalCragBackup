@@ -11,7 +11,9 @@ A lightweight Docker-based tool for creating and managing backups of your databa
    cp config.template.yml config.yml
    ```
 
-2. Update the config.yml file with your setup details.
+2. Update the config.yml file with your setup details
+     - You can choose between storing backups locally or on an SFTP server.
+     - Add an email configuration to receive notifications about backup errors
 3. Build the Docker image:
    ```bash
    docker build -t localcrag-backup-tool .
@@ -68,10 +70,3 @@ To run the backup script, use the following command:
 The script will create a backup of your database and MinIO storage, storing the files in the configures backup
 directory. It is recommended to run this script periodically (e.g. in cron), such as daily or weekly, to ensure you have
 up-to-date backups.
-
-
-
-todos:
-
-- document sftp v local
-- add note for adding host key before sftp usage to prevent errors: ssh <FTP_USER>@<FTP_HOST>
