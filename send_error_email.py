@@ -6,7 +6,7 @@ from pathlib import Path
 import sys
 import yaml
 
-config = yaml.safe_load(Path(os.path.dirname(os.path.realpath(__file__)) + "./config.yml").read_text())
+config = yaml.safe_load(Path(os.path.dirname(os.path.realpath(__file__)) + "/config.yml").read_text())
 
 
 def send_failure_message(error_logs):
