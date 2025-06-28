@@ -68,3 +68,10 @@ To run the backup script, use the following command:
 The script will create a backup of your database and MinIO storage, storing the files in the configures backup
 directory. It is recommended to run this script periodically (e.g. in cron), such as daily or weekly, to ensure you have
 up-to-date backups.
+
+
+
+todos:
+
+- document sftp v local
+- add note for adding host key before sftp usage to prevent errors: ssh <FTP_USER>@<FTP_HOST>
