@@ -69,7 +69,7 @@ if [[ "$STORAGE_TYPE" == "sftp" ]]; then
   # Upload backup to SFTP server
   echo "Uploading backup to SFTP server..."
   sshpass -p "$SFTP_PASSWORD" sftp -oStrictHostKeyChecking=no -oBatchMode=no -b - "$SFTP_USER@$SFTP_HOST" <<EOF
-mkdir $SFTP_DIR
+-mkdir $SFTP_DIR
 put $ZIP_FILE $SFTP_DIR/
 EOF
 
