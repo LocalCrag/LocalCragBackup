@@ -68,7 +68,7 @@ rm -rf "$DB_BACKUP_FILE" "$MINIO_BACKUP_DIR"
 if [[ "$STORAGE_TYPE" == "sftp" ]]; then
   # Upload backup to SFTP server
   echo "Uploading backup to SFTP server..."
-  sshpass -p "$SFTP_PASSWORD" -oStrictHostKeyChecking=no -oBatchMode=no -b - "$SFTP_USER@$SFTP_HOST" <<EOF
+  sshpass -p "$SFTP_PASSWORD" sftp -oStrictHostKeyChecking=no -oBatchMode=no -b - "$SFTP_USER@$SFTP_HOST" <<EOF
 mkdir $SFTP_DIR
 put $ZIP_FILE $SFTP_DIR/
 EOF
@@ -76,7 +76,7 @@ EOF
   # Retain only the specified number of backups on the SFTP server
   if [[ $BACKUP_KEEP -ne -1 ]]; then
     echo "Managing backups on SFTP server..."
-    FILES=$(sshpass -p "$SFTP_PASSWORD" -oStrictHostKeyChecking=no -oBatchMode=no -b - "$SFTP_USER@$SFTP_HOST" <<EOF
+    FILES=$(sshpass -p "$SFTP_PASSWORD" sftp -oStrictHostKeyChecking=no -oBatchMode=no -b - "$SFTP_USER@$SFTP_HOST" <<EOF
 ls -1 $SFTP_DIR/
 EOF
 )
@@ -85,7 +85,7 @@ EOF
       DELETE_COUNT=$((FILE_COUNT - BACKUP_KEEP))
       DELETE_FILES=$(echo "$FILES" | head -n "$DELETE_COUNT")
       for FILE in $DELETE_FILES; do
-        sshpass -p "$SFTP_PASSWORD" -oStrictHostKeyChecking=no -oBatchMode=no -b - "$SFTP_USER@$SFTP_HOST" <<EOF
+        sshpass -p "$SFTP_PASSWORD" sftp -oStrictHostKeyChecking=no -oBatchMode=no -b - "$SFTP_USER@$SFTP_HOST" <<EOF
 rm $SFTP_DIR/$FILE
 EOF
       done
