@@ -46,30 +46,30 @@ DB_BACKUP_FILE="$BACKUP_DIR/db_backup_$TIMESTAMP.sql"
 MINIO_BACKUP_DIR="$BACKUP_DIR/minio_backup_$TIMESTAMP"
 ZIP_FILE="$BACKUP_DIR/backup_$TIMESTAMP.zip"
 
-# Ensure backup directory exists
-mkdir -p "$BACKUP_DIR"
-
-# Backup PostgreSQL database
-export PGPASSWORD=$DB_PASSWORD
-pg_dump -h $DB_HOST -p $DB_PORT -U $DB_USER $DB_NAME > "$DB_BACKUP_FILE"
-
-# Backup MinIO files
-mkdir -p "$MINIO_BACKUP_DIR"
-mc alias set minio $MINIO_HOST $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
-mc cp --recursive minio/$MINIO_BUCKET "$MINIO_BACKUP_DIR"
-
-# Create zip archive
-zip -r "$ZIP_FILE" "$DB_BACKUP_FILE" "$MINIO_BACKUP_DIR"
-
-# Cleanup temporary files
-rm -rf "$DB_BACKUP_FILE" "$MINIO_BACKUP_DIR"
+## Ensure backup directory exists
+#mkdir -p "$BACKUP_DIR"
+#
+## Backup PostgreSQL database
+#export PGPASSWORD=$DB_PASSWORD
+#pg_dump -h $DB_HOST -p $DB_PORT -U $DB_USER $DB_NAME > "$DB_BACKUP_FILE"
+#
+## Backup MinIO files
+#mkdir -p "$MINIO_BACKUP_DIR"
+#mc alias set minio $MINIO_HOST $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
+#mc cp --recursive minio/$MINIO_BUCKET "$MINIO_BACKUP_DIR"
+#
+## Create zip archive
+#zip -r "$ZIP_FILE" "$DB_BACKUP_FILE" "$MINIO_BACKUP_DIR"
+#
+## Cleanup temporary files
+#rm -rf "$DB_BACKUP_FILE" "$MINIO_BACKUP_DIR"
 
 # Handle storage type
 if [[ "$STORAGE_TYPE" == "sftp" ]]; then
   # Upload backup to SFTP server
   echo "Uploading backup to SFTP server..."
   sshpass -p "$FTP_PASSWORD" sftp -oBatchMode=no -b - "$FTP_USER@$FTP_HOST" <<EOF
-mkdir -p $FTP_DIR
+mkdir $FTP_DIR
 put $ZIP_FILE $FTP_DIR/
 EOF
 
