@@ -29,3 +29,12 @@ smtp:
   password: ''
   sender: ''
   receiver: ''
+
+ftp:
+  host: ftp.localcrag.cloud
+  user: ftp_user
+  password: ftp_password
+  dir: /localcrag-backups
+
+storage:
+  type: local  # Options: local, ftp
