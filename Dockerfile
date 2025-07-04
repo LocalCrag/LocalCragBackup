@@ -27,8 +27,8 @@ RUN apt-get update && apt-get install -y \
 # Install Pipenv
 RUN pip3 install --no-cache-dir pipenv
 
-# Copy the backup script and configuration files
-COPY backup.sh config.yml send_error_email.py Pipfile Pipfile.lock /app/
+# Copy the backup script and other required files
+COPY backup.sh send_error_email.py Pipfile Pipfile.lock /app/
 
 # Install dependencies using Pipenv
 RUN pipenv install --deploy --ignore-pipfile

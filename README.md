@@ -42,7 +42,7 @@ To make the database accessible, follow these steps:
        ports:
          - 5432:5432
        volumes:
-         - database:/var/lib/postgresql/data # Needed in the override file as well as lists get replaced, not merged
+         - database:/var/lib/postgresql/data/db-files # Needed in the override file as well as lists get replaced, not merged
          - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
      [...]
      server:
@@ -64,7 +64,7 @@ To make the database accessible, follow these steps:
 To run the backup script, use the following command:
 
    ```bash
-   docker run --rm -v $(pwd)/backups:/app/backups localcrag-backup-tool
+   docker run --rm -v $(pwd)/backups:/app/backups -v $(pwd)/config.yml:/app/config.yml localcrag-backup-tool
    ```
 
 The script will create a backup of your database and MinIO storage, storing the files in the configures backup
