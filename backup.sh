@@ -29,8 +29,8 @@ DB_USER=$(yq '.db.user' "$CONFIG_FILE")
 DB_PASSWORD=$(yq '.db.password' "$CONFIG_FILE")
 DB_NAME=$(yq '.db.name' "$CONFIG_FILE")
 MINIO_HOST=$(yq '.minio.host' "$CONFIG_FILE")
-MINIO_ACCESS_KEY=$(yq '.minio.access_key' "$CONFIG_FILE")
-MINIO_SECRET_KEY=$(yq '.minio.secret_key' "$CONFIG_FILE")
+MINIO_USER=$(yq '.minio.user' "$CONFIG_FILE")
+MINIO_PASSWORD=$(yq '.minio.password' "$CONFIG_FILE")
 MINIO_BUCKET=$(yq '.minio.bucket' "$CONFIG_FILE")
 BACKUP_DIR=$(yq '.backup.dir' "$CONFIG_FILE")
 BACKUP_KEEP=$(yq '.backup.keep' "$CONFIG_FILE")
@@ -55,7 +55,7 @@ pg_dump -h $DB_HOST -p $DB_PORT -U $DB_USER $DB_NAME > "$DB_BACKUP_FILE"
 
 # Backup MinIO files
 mkdir -p "$MINIO_BACKUP_DIR"
-mc alias set minio $MINIO_HOST $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
+mc alias set minio $MINIO_HOST $MINIO_USER $MINIO_PASSWORD
 mc cp --recursive minio/$MINIO_BUCKET "$MINIO_BACKUP_DIR"
 
 # Create zip archive
