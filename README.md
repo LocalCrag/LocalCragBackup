@@ -70,3 +70,5 @@ To run the backup script, use the following command:
 The script will create a backup of your database and MinIO storage, storing the files in the configures backup
 directory. It is recommended to run this script periodically (e.g. in cron), such as daily or weekly, to ensure you have
 up-to-date backups.
+
+**Note:** The minio `mc` tool has a weird behaviour where it will fail with `mc: <ERROR> Unable to prepare URL for copying. Unable to guess the type of copy operation.` if the bucket is empty. If you get this error when setting up backups a fresh LocalCrag instance, you can work around it by e.g. setting a profile picture for your superadmin account.  
