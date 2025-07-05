@@ -1,10 +1,10 @@
 # LocalCrag Backup Tool
 
-A lightweight Docker-based tool for creating and managing backups of your database and MinIO storage.
+A Docker-based tool for creating and managing backups of your LocalCrag database and MinIO storage.
 
 ## Setup
 
-### Prepare backup tool
+### Prepare backup tool config
 
 1. Copy the `config.template.yml` file to `config.yml`:
    ```bash
@@ -14,10 +14,6 @@ A lightweight Docker-based tool for creating and managing backups of your databa
 2. Update the config.yml file with your setup details
      - You can choose between storing backups locally or on an SFTP server.
      - Add an email configuration to receive notifications about backup errors
-3. Build the Docker image:
-   ```bash
-   docker build -t localcrag-backup-tool .
-   ```
 
 ### Prepare LocalCrag deployment
 
@@ -64,7 +60,7 @@ To make the database accessible, follow these steps:
 To run the backup script, use the following command:
 
    ```bash
-   docker run --rm -v $(pwd)/backups:/app/backups -v $(pwd)/config.yml:/app/config.yml localcrag-backup-tool
+   docker run --rm -v $(pwd)/backups:/app/backups -v $(pwd)/config.yml:/app/config.yml ghcr.io/localcrag/localcrag-backup:latest
    ```
 
 The script will create a backup of your database and MinIO storage, storing the files in the configures backup
