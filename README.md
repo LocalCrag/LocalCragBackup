@@ -6,12 +6,17 @@ A Docker-based tool for creating and managing backups of your LocalCrag database
 
 ### Prepare backup tool config
 
-1. Copy the `config.template.yml` file to `config.yml`:
+1. Clone the repository:
+```bash
+git clone https://github.com/LocalCrag/LocalCragBackup.git
+```
+
+2. Copy the `config.template.yml` file to `config.yml`:
    ```bash
    cp config.template.yml config.yml
    ```
 
-2. Update the config.yml file with your setup details
+3. Update the config.yml file with your setup details
      - You can choose between storing backups locally or on an SFTP server.
      - Add an email configuration to receive notifications about backup errors
 
@@ -57,7 +62,7 @@ To make the database accessible, follow these steps:
 
 ## Usage
 
-To run the backup script, use the following command:
+To run the backup script, use the following command (expects to be run from the root directory of the LocalCragBackup repository, replace `$(pwd)` with the path to your LocalCragBackup directory if needed):
 
    ```bash
    docker run --rm -v $(pwd)/backups:/app/backups -v $(pwd)/config.yml:/app/config.yml ghcr.io/localcrag/localcrag-backup:latest
