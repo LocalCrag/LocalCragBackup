@@ -31,9 +31,9 @@ smtp:
   receiver: ''
 
 sftp:
-  host: ftp.localcrag.cloud
-  user: ftp_user
-  password: ftp_password
+  host: ''
+  user: ''
+  password: ''
   dir: /localcrag-backups
 
 storage:
