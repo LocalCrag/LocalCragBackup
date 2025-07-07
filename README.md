@@ -37,7 +37,7 @@ To make the database accessible, follow these steps:
    host    all             backup             <BACKUP_TOOL_IP>/32            md5
    ```
    Replace `<BACKUP_TOOL_IP>` with the actual IP address of the server where the backup tool will run.
-2. Open up the database port in the `docker-compose.override.yml` file of your LocalCrag deployment and override the `pg_hba.conf` file to allow access from the backup tool's IP address. Also add the `POSTGRES_BACKUP_PASSWORD` environment variable to the server service. On startup, the backup postgres user will be created using this password.
+2. Create a `docker-compose.override.yml` file to open the database port of your LocalCrag deployment and mount the `pg_hba.conf` file to allow access from the backup tool's IP address. Also add the `POSTGRES_BACKUP_PASSWORD` environment variable to the server service. On server startup, the backup postgres user will be created using this password.
    ```yaml
    services:
      database:
@@ -46,15 +46,14 @@ To make the database accessible, follow these steps:
        volumes:
          - database:/var/lib/postgresql/data/db-files # Needed in the override file as well as lists get replaced, not merged
          - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-     [...]
      server:
        environment:
          POSTGRES_BACKUP_PASSWORD: secure-password-for-backup-user
    ```
 3. Restart your LocalCrag deployment to apply the changes:
    ```bash
-   docker-compose down
-   docker-compose up -d
+   docker compose down
+   docker compose up -d
    ```
 4. Open the port in your firewall to allow access to the database from the backup tool's IP address. For example, if you are using `ufw`, you can run:
    ```bash
