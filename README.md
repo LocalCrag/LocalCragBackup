@@ -7,9 +7,9 @@ A Docker-based tool for creating and managing backups of your LocalCrag database
 ### Prepare backup tool config
 
 1. Clone the repository:
-```bash
-git clone https://github.com/LocalCrag/LocalCragBackup.git
-```
+   ```bash
+   git clone https://github.com/LocalCrag/LocalCragBackup.git
+   ```
 
 2. Copy the `config.template.yml` file to `config.yml`:
    ```bash
