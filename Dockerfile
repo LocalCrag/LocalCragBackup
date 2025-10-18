@@ -38,3 +38,7 @@ RUN chmod +x /app/backup.sh
 
 # Default command
 CMD ["/app/backup.sh"]
+
+LABEL org.opencontainers.image.source=https://github.com/LocalCrag/LocalCragBackup
+LABEL org.opencontainers.image.description="Backup tool for LocalCrag, a climbing crag database and guidebook platform."
+LABEL org.opencontainers.image.licenses="AGPL-3.0"
